@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void onJump(InputAction.CallbackContext context)
+    public void OnJump(InputAction.CallbackContext context)
     {
         if (context.started && touchingDirections.IsGrounded)
         {
