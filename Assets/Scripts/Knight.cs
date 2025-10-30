@@ -9,9 +9,11 @@ public class Knight : MonoBehaviour
 {
 
     public float walkSpeed = 3f;
+    public float walkStopRate = 0.6f;
+    public DetectionZone attackZone;
 
     Rigidbody2D rb;
-
+    Animator animator;
     TouchingDirections touchingDirections;
     public enum WalkableDirection { Right, Left}
 
@@ -40,10 +42,29 @@ public class Knight : MonoBehaviour
             _walkDirection = value; }
     }
 
+    public bool _hasTarget = false;
+    public bool HasTarget
+    {
+        get { return _hasTarget; }
+        private set
+        {
+            _hasTarget = value;
+            animator.SetBool(AnimationStrings.hasTarget, value);
+        }
+    }
+    public bool CanMove
+    {
+        get
+        {
+            return animator.GetBool(AnimationStrings.canMove);
+        }
+    }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         touchingDirections = GetComponent<TouchingDirections>();
+        animator = GetComponent<Animator>();    
     }
 
     private void FixedUpdate()
@@ -52,7 +73,15 @@ public class Knight : MonoBehaviour
         {
             FlipDirection();
         }
-        rb.velocity = new Vector2(walkSpeed * WalkDirectionVector.x, rb.velocity.y);
+        if (CanMove)
+        {
+            rb.velocity = new Vector2(walkSpeed * WalkDirectionVector.x, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,0, walkStopRate), rb.velocity.y);
+        }
+        
     }
 
     private void FlipDirection()
@@ -79,6 +108,6 @@ public class Knight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        HasTarget = attackZone.detectedColliders.Count > 0;
     }
 }
