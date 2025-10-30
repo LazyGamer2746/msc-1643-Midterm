@@ -15,6 +15,12 @@ public class PlayerController : MonoBehaviour
     public float jumpImpulse = 10f;
     TouchingDirections touchingDirections;
 
+
+    public bool canMove{get
+    {
+        return animator.GetBool(AnimationStrings.canMove);
+    } }
+
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -65,9 +71,13 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
+        if (canMove && !touchingDirections.IsOnWall)
+        {
+            rb.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.velocity.y);
 
         animator.SetFloat(AnimationStrings.yVelocity, rb.velocity.y);
+        }
+        
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -105,8 +115,16 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started && touchingDirections.IsGrounded)
         {
-            animator.SetTrigger(AnimationStrings.jump);
+            animator.SetTrigger(AnimationStrings.jumpTrigger);
             rb.velocity = new Vector2(rb.velocity.x, jumpImpulse);
+        }
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            animator.SetTrigger(AnimationStrings.attackTrigger);
         }
     }
 }
