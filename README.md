@@ -1,14 +1,14 @@
 #### MCS 1643 README file
-# **Replace this Project Name**
+# MidTerm
 
-#### Author: *Replace this with your name*
+#### Author: Jordan Stratton
 
 ##### Modified: *2024-09-06*
 
 <br>
 
 #### Questions for tutorial assignments: (remove this section for projects)
-**Which tutorial is this? **
+**None of them **
 
 **1. Did you make any additions beyond the tutorial requirements? If so, what?**
 > &nbsp;
